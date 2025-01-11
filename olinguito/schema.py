@@ -1,5 +1,6 @@
 import types
 import typing
+import warnings
 from dataclasses import dataclass
 from typing import Any, List, Literal, NotRequired, TypedDict
 
@@ -47,7 +48,7 @@ def to_schema_type(anno: Any, /) -> _SchemaType:
         return _to_typeddict_schema_type(anno)
     elif typeguards.is_annotated(anno):
         return _to_annotated_schema_type(anno)
-    raise TypeError
+    raise TypeError  # pragma: no cover
 
 
 def _to_union_schema_type(anno: typeguards.UnionOrAlias) -> _SchemaType:
@@ -57,7 +58,7 @@ def _to_union_schema_type(anno: typeguards.UnionOrAlias) -> _SchemaType:
         schema = to_schema_type(arg)
         typ = schema["type"]
         if isinstance(typ, list):
-            arguments.extend(typ)
+            warnings.warn(f"Unexpected symbol: {typ}", UserWarning)  # pragma: no cover
         else:
             arguments.append(typ)
         if "properties" in schema or "items" in schema:
@@ -93,7 +94,7 @@ def _to_annotated_schema_type(anno: typeguards.AnnoAlias) -> _SchemaType:
     origin = anno.__origin__
     marks = [m for m in anno.__metadata__ if isinstance(m, _Mark)]
     if len(marks) > 1:
-        raise ValueError
+        raise ValueError  # pragma: no cover
     elif len(marks) == 1:
         return {**marks[0].content, **to_schema_type(origin)}
     else:
