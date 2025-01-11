@@ -1,5 +1,7 @@
 # olinguito
 
+![Python](https://img.shields.io/badge/-Python-F9DC3E.svg?logo=python&style=flat)  [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
 `olinguito` is a lightweight Python library that provides a simple way to generate JSON schemas based on function signatures.  
 It wraps functions and automatically creates JSON schemas that describe their parameters.  
 This is particularly useful for validating input arguments in APIs or other dynamic environments.
