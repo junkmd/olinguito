@@ -11,10 +11,10 @@ This is particularly useful for validating input arguments in APIs or other dyna
 
 - Generate JSON schemas based on function signatures.
 - Supports Python's type hints, including:
-  - Primitive types (`int`, `str`, `bool`, etc.)
-  - `TypedDict` for complex objects
-  - `Union`, `Optional`, and `Annotated`
-  - Nested lists and objects
+  - Primitive types ([`int`](https://docs.python.org/3/library/functions.html#int), [`str`](https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str), [`bool`](https://docs.python.org/3/library/stdtypes.html#typebool), etc.)
+  - [`TypedDict`](https://docs.python.org/3/library/typing.html#typing.TypedDict) for complex objects
+  - [`Union`](https://docs.python.org/3/library/typing.html#typing.Union), [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional), and [`Annotated`](https://docs.python.org/3/library/typing.html#typing.Annotated)
+  - Nested [`list`](https://docs.python.org/3/library/stdtypes.html#list)s and objects
 - Provides a convenient `wrap` function to decorate and manage schema-aware functions.
 
 
