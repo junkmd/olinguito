@@ -78,3 +78,9 @@ class Test_to_schema_type:
             "required": ["foo", "bar"],
             "additionalProperties": False,
         }
+
+    def test_optional_list(self):
+        assert to_schema_type(list[str] | None) == {
+            "type": ["array", "null"],
+            "items": {"type": "string"},
+        }
