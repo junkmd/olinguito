@@ -63,3 +63,18 @@ class Test_to_schema_type:
         assert to_schema_type(Union[int | Union[str, float, None]]) == {
             "type": ["integer", "string", "number", "null"]
         }
+
+    def test_optional_typeddict(self):
+        class _D(TypedDict):
+            foo: str
+            bar: int | None
+
+        assert to_schema_type(_D | None) == {
+            "type": ["object", "null"],
+            "properties": {
+                "foo": {"type": "string"},
+                "bar": {"type": ["integer", "null"]},
+            },
+            "required": ["foo", "bar"],
+            "additionalProperties": False,
+        }

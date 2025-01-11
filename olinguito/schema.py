@@ -52,13 +52,27 @@ def to_schema_type(anno: Any, /) -> _SchemaType:
 
 def _to_union_schema_type(anno: typeguards.UnionOrAlias) -> _SchemaType:
     arguments: list[str] = []
+    schemas: list[_SchemaType] = []
     for arg in typing.get_args(anno):
-        typ = to_schema_type(arg)["type"]
+        schema = to_schema_type(arg)
+        typ = schema["type"]
         if isinstance(typ, list):
             arguments.extend(typ)
         else:
             arguments.append(typ)
-    return {"type": arguments}
+        if "properties" in schema or "items" in schema:
+            schemas.append(schema)
+    result: _SchemaType = {"type": arguments}
+    for schema in schemas:
+        if "properties" in schema:
+            result["properties"] = schema["properties"]
+        if "required" in schema:
+            result["required"] = schema["required"]
+        if "additionalProperties" in schema:
+            result["additionalProperties"] = schema["additionalProperties"]
+        if "items" in schema:
+            result["items"] = schema["items"]
+    return result
 
 
 def _to_typeddict_schema_type(anno: typeguards.SubTypedDict) -> _SchemaType:
