@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "olinguito"
+description = "A Python function decorator generating JSON schema based on signatures."
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Jun Komoda"}
+]
+homepage = "https://github.com/junkmd/olinguito"
+keywords = ["json", "schema", "signature"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3.13",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries"
+]
+requires-python = ">=3.11"
+
+[project.urls]
+Homepage = "https://github.com/junkmd/olinguito"
+Repository = "https://github.com/junkmd/olinguito"
+
+[tool.setuptools.dynamic]
+version = {attr = "olinguito.__version__"}
+readme = {file = "README.md", content-type = "text/markdown"}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["olinguito*"]
