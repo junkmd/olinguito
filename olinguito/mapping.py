@@ -21,5 +21,11 @@ class Mapping:
     def __iter__(self) -> collections.abc.Iterator[Wrapper[..., Any]]:
         yield from self.data.values()
 
+    def __bool__(self) -> bool:
+        return bool(self.data)
+
+    def __len__(self) -> int:
+        return len(self.data)
+
     def __call__(self, key: str, *args: Any, **kwargs: Any) -> Any:
         return self.data[key](*args, **kwargs)
