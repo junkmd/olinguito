@@ -48,7 +48,7 @@ def to_schema_type(anno: Any, /) -> _SchemaType:
         return _to_typeddict_schema_type(anno)
     elif typeguards.is_annotated(anno):
         return _to_annotated_schema_type(anno)
-    raise TypeError  # pragma: no cover
+    raise TypeError
 
 
 def _to_union_schema_type(anno: typeguards.UnionOrAlias) -> _SchemaType:

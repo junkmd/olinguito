@@ -1,3 +1,4 @@
+from dataclasses import dataclass, field
 from typing import Annotated
 
 import pytest
@@ -44,6 +45,35 @@ class Test_wrap:
 
         with pytest.raises(TypeError):
             olinguito.wrap(no_doc_func)
+
+    def test_wrap_method(self):
+        @dataclass
+        class Parrot:
+            speech_count: int = field(init=False, default=0)
+
+            def speak(self, text: str) -> str:
+                """simple method"""
+                self.speech_count = +1
+                return text
+
+        with pytest.raises(TypeError):
+            # Similarly, it cannot be used as a decorator for unbound methods.
+            olinguito.wrap(Parrot.speak)
+
+        parrot = Parrot()
+        assert parrot.speech_count == 0
+        # It cannot be used as a wrapper for bound methods.
+        speak = olinguito.wrap(parrot.speak)
+        assert speak("I am pining for the fjords.") == "I am pining for the fjords."
+        assert speak.parameters == {
+            "type": "object",
+            "properties": {"text": {"type": "string"}},
+            "required": ["text"],
+            "additionalProperties": False,
+        }
+        assert speak.doc == "simple method"
+        assert speak.name == "speak"
+        assert parrot.speech_count == 1
 
     def test_wrap_with_complex_type(self):
         @olinguito.wrap
