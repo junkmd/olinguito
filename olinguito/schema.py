@@ -1,6 +1,5 @@
 import types
 import typing
-import warnings
 from dataclasses import dataclass
 from typing import Any, List, Literal, NotRequired, TypedDict
 
@@ -58,7 +57,7 @@ def _to_union_schema_type(anno: typeguards.UnionOrAlias) -> _SchemaType:
         schema = to_schema_type(arg)
         typ = schema["type"]
         if isinstance(typ, list):
-            warnings.warn(f"Unexpected symbol: {typ}", UserWarning)  # pragma: no cover
+            raise TypeError(f"Unexpected symbol: '{typ}'")
         else:
             arguments.append(typ)
         if "properties" in schema or "items" in schema:
