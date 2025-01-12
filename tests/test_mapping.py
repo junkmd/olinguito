@@ -36,6 +36,15 @@ class Test_Mapping:
         assert not olinguito.Mapping()
         assert olinguito.Mapping(add)
 
+    def test_dunder_contains(self):
+        mapping = olinguito.Mapping(add, multiply)
+        assert "add" in mapping
+        assert "multiply" in mapping
+        assert "greet" not in mapping
+        assert add in mapping
+        assert multiply in mapping
+        assert greet not in mapping
+
     def test_dunder_len(self):
         assert len(olinguito.Mapping()) == 0
         assert len(olinguito.Mapping(add)) == 1

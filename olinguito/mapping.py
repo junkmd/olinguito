@@ -24,6 +24,11 @@ class Mapping:
     def __bool__(self) -> bool:
         return bool(self.data)
 
+    def __contains__(self, key: Any) -> bool:
+        if isinstance(key, str):
+            return key in self.data
+        return key in tuple(self.data.values())
+
     def __len__(self) -> int:
         return len(self.data)
 
