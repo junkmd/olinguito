@@ -1,7 +1,7 @@
 import types
 import typing
 from dataclasses import dataclass
-from typing import Any, List, Literal, NotRequired, TypedDict
+from typing import Any, List, Literal, NotRequired, TypeAlias, TypedDict
 
 from . import typeguards
 
@@ -19,8 +19,13 @@ def description(text: str) -> _Mark:
     return _Mark({"description": text})
 
 
+TypeKeyword: TypeAlias = Literal[
+    "string", "integer", "number", "object", "array", "boolean", "null"
+]
+
+
 class _SchemaType(TypedDict):
-    type: str | list[str]
+    type: TypeKeyword | list[TypeKeyword]
     items: NotRequired["_SchemaType"]
     description: NotRequired[str]
     properties: NotRequired[dict[str, "_SchemaType"]]
@@ -51,7 +56,7 @@ def to_schema_type(anno: Any, /) -> _SchemaType:
 
 
 def _to_union_schema_type(anno: typeguards.UnionOrAlias) -> _SchemaType:
-    arguments: list[str] = []
+    arguments: list[TypeKeyword] = []
     schemas: list[_SchemaType] = []
     for arg in typing.get_args(anno):
         schema = to_schema_type(arg)
