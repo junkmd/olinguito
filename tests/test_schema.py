@@ -1,6 +1,8 @@
 import types
 from typing import Annotated, Optional, TypedDict, Union
 
+import pytest
+
 import olinguito
 from olinguito.schema import to_schema_type
 
@@ -48,6 +50,14 @@ class Test_to_schema_type:
             "description": "foo",
         }
         assert to_schema_type(Annotated[int, "bar"]) == {"type": "integer"}
+
+    def test_annotated_multiple_description(self):
+        with pytest.raises(ValueError):
+            to_schema_type(
+                Annotated[
+                    int, olinguito.description("foo"), olinguito.description("bar")
+                ]
+            )
 
     def test_union(self):
         assert to_schema_type(int | str) == {"type": ["integer", "string"]}

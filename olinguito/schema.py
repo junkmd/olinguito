@@ -94,7 +94,7 @@ def _to_annotated_schema_type(anno: typeguards.AnnoAlias) -> _SchemaType:
     origin = anno.__origin__
     marks = [m for m in anno.__metadata__ if isinstance(m, _Mark)]
     if len(marks) > 1:
-        raise ValueError  # pragma: no cover
+        raise ValueError
     elif len(marks) == 1:
         return {**marks[0].content, **to_schema_type(origin)}
     else:
