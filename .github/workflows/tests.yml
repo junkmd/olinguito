@@ -1,4 +1,4 @@
-name: Test with pytest, doctest and ruff.
+name: Test with pytest and more.
 
 on:
   push:
@@ -32,7 +32,7 @@ jobs:
 
       - name: Run pytest with coverage
         run: |
-          python -m pytest --cov=olinguito
+          python -m pytest --cov=olinguito -v
 
       - name: Run doctests on README.md
         run: |
@@ -45,3 +45,7 @@ jobs:
       - name: Run ruff check for I (imports)
         run: |
           python -m ruff check --select I .
+
+      - name: Run mypy
+        run: |
+          python -m mypy olinguito/. -v
