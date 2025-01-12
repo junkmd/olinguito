@@ -1,16 +1,19 @@
 import collections.abc
+import types
 from dataclasses import dataclass
 from typing import Any
 
 from .wrapping import Wrapper
 
 
-@dataclass(init=False, frozen=True)
+@dataclass(init=False, frozen=True, repr=False)
 class Mapping:
     data: collections.abc.Mapping[str, Wrapper[..., Any]]
 
     def __init__(self, *wrappers: Wrapper[..., Any]) -> None:
-        object.__setattr__(self, "data", {w.name: w for w in wrappers})
+        object.__setattr__(
+            self, "data", types.MappingProxyType({w.name: w for w in wrappers})
+        )
 
     def __getitem__(self, key: str) -> Wrapper[..., Any]:
         return self.data[key]
