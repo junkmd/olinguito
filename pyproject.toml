@@ -4,6 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "olinguito"
+dynamic = ["version"]
 description = "A Python function decorator generating JSON schema based on signatures."
 readme = "README.md"
 license = {text = "MIT"}
