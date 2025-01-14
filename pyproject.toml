@@ -10,7 +10,6 @@ license = {text = "MIT"}
 authors = [
     {name = "Jun Komoda"}
 ]
-homepage = "https://github.com/junkmd/olinguito"
 keywords = ["json", "schema", "signature"]
 classifiers = [
     "Development Status :: 4 - Beta",
