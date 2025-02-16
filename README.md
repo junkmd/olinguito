@@ -82,6 +82,23 @@ Here are some example use cases:
 >>>
 ```
 
+### Convert from `Literal` to `enum` Schema
+
+```py
+>>> from typing import Literal
+>>> @olinguito.wrap
+... def greet(msg: Literal["hello", "bye"]) -> str:
+...     """Sends messages."""
+...     return f"I said {msg}."
+... 
+>>> pprint.pprint(greet.parameters)
+{'additionalProperties': False,
+ 'properties': {'msg': {'enum': ['hello', 'bye'], 'type': 'string'}},
+ 'required': ['msg'],
+ 'type': 'object'}
+>>> 
+```
+
 ### Using `Annotated` for Descriptions
 
 ```py

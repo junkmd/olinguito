@@ -31,6 +31,7 @@ class _SchemaType(TypedDict):
     properties: NotRequired[dict[str, "_SchemaType"]]
     required: NotRequired[list[str]]
     additionalProperties: NotRequired[Literal[False]]
+    enum: NotRequired[list[int | str | bool]]
 
 
 def to_schema_type(anno: Any, /) -> _SchemaType:
@@ -42,6 +43,8 @@ def to_schema_type(anno: Any, /) -> _SchemaType:
         return {"type": "string"}
     elif anno is bool:
         return {"type": "boolean"}
+    elif typing.get_origin(anno) is Literal:
+        return _to_enum_schema_type(typing.get_args(anno))
     elif typing.get_origin(anno) in (list, List):
         return {"type": "array", "items": to_schema_type(typing.get_args(anno)[0])}
     elif anno is types.NoneType:
@@ -53,6 +56,18 @@ def to_schema_type(anno: Any, /) -> _SchemaType:
     elif typeguards.is_annotated(anno):
         return _to_annotated_schema_type(anno)
     raise TypeError
+
+
+def _to_enum_schema_type(values: tuple[int | str | bool, ...]) -> _SchemaType:
+    vtypes = {type(v) for v in values}
+    allowed_types = {int, str, bool}
+    if not vtypes <= allowed_types:
+        raise TypeError(f"Invalid Literal types: {vtypes}")
+    if len(vtypes) > 1:
+        raise TypeError(f"Mixed types in Literal: {vtypes}")
+    schema = to_schema_type(type(values[0]))
+    schema["enum"] = list(values)
+    return schema
 
 
 def _to_union_schema_type(anno: typeguards.UnionOrAlias) -> _SchemaType:

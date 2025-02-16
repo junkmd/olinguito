@@ -1,4 +1,6 @@
-from typing import Annotated, TypedDict
+from typing import Annotated, Literal, TypedDict
+
+import pytest
 
 import olinguito
 from olinguito.generating import generate_json_schema
@@ -66,6 +68,42 @@ class Test_generate_json_schema:
             "required": ["a"],
             "additionalProperties": False,
         }
+
+    def test_int_literals(self):
+        def func(a: Literal[1, 2]): ...
+
+        assert generate_json_schema(func) == {
+            "type": "object",
+            "properties": {"a": {"type": "integer", "enum": [1, 2]}},
+            "required": ["a"],
+            "additionalProperties": False,
+        }
+
+    def test_str_literals(self):
+        def func(a: Literal["foo", "bar"]): ...
+
+        assert generate_json_schema(func) == {
+            "type": "object",
+            "properties": {"a": {"type": "string", "enum": ["foo", "bar"]}},
+            "required": ["a"],
+            "additionalProperties": False,
+        }
+
+    def test_bool_literals(self):
+        def func(a: Literal[True]): ...
+
+        assert generate_json_schema(func) == {
+            "type": "object",
+            "properties": {"a": {"type": "boolean", "enum": [True]}},
+            "required": ["a"],
+            "additionalProperties": False,
+        }
+
+    def test_mixed_literals(self):
+        def func(a: Literal["foo", 1, False]): ...
+
+        with pytest.raises(TypeError):
+            generate_json_schema(func)
 
     def test_multiple_arguments(self):
         def func(a: int, b: str): ...

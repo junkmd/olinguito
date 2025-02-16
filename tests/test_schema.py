@@ -1,5 +1,5 @@
 import types
-from typing import Annotated, Optional, TypedDict, Union
+from typing import Annotated, Literal, Optional, TypedDict, Union
 
 import pytest
 
@@ -22,6 +22,9 @@ class Test_to_schema_type:
 
     def test_none(self):
         assert to_schema_type(types.NoneType) == {"type": "null"}
+
+    def test_literal(self):
+        assert to_schema_type(Literal[1, 2]) == {"type": "integer", "enum": [1, 2]}
 
     def test_list(self):
         assert to_schema_type(list[str]) == {
