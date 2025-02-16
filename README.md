@@ -113,6 +113,28 @@ True
 >>>
 ```
 
+### `Mapping` Utilities
+
+```py
+>>> @olinguito.wrap
+... def subtract(x: int, y: int) -> int:
+...     """Subtracts two integers."""
+...     return x - y
+...
+>>> @olinguito.wrap
+... def multiply(x: int, y: int) -> int:
+...     """Multiplies two integers."""
+...     return x * y
+...
+>>> mapping = olinguito.Mapping(add, multiply)
+>>> len(mapping)
+2
+>>> mapping["multiply"](2, 3)  # Accessing via item lookup
+6
+>>> mapping("subtract", 6, 5)  # Calling functions by name
+1
+>>>
+```
 
 ## Why "olinguito"?
 
